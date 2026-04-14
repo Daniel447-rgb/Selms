@@ -1,0 +1,122 @@
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (min-width: 500px) {
+  .overview-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.overview-card {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ov-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.ov-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.ov-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.course-progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.cp-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem;
+}
+
+.cp-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.cp-info { flex: 1; min-width: 0; }
+.cp-info h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.1rem; }
+.cp-info p { font-size: 0.75rem; color: var(--text-secondary); }
+.cp-footer { margin-top: 0.25rem; }
+
+.quiz-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.qh-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+}
+
+.qh-score {
+  font-size: 1.3rem;
+  font-weight: 800;
+  min-width: 52px;
+  text-align: center;
+}
+
+.qh-info { flex: 1; }
+.qh-info h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.1rem; }
+.qh-info p { font-size: 0.75rem; color: var(--text-secondary); }
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+}
+
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1rem 0.75rem;
+  text-align: center;
+}
+
+.badge-emoji { font-size: 2rem; }
+.badge-item p { font-size: 0.72rem; font-weight: 600; color: var(--text-secondary); }
