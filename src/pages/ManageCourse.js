@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  doc, getDoc, setDoc, updateDoc, addDoc, collection,
+  doc, getDoc, updateDoc, addDoc, collection,
   getDocs, deleteDoc, serverTimestamp
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
@@ -38,8 +38,8 @@ export default function ManageCourse() {
   });
 
   useEffect(() => {
-    if (isEdit) fetchCourse();
-  }, [courseId]);
+    if (isEdit) fetchCourse(); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [courseId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function fetchCourse() {
     try {

@@ -20,8 +20,8 @@ export default function LessonView() {
   const isCompleted = userProfile?.completedLessons?.includes(lessonKey);
 
   useEffect(() => {
-    fetchData();
-  }, [courseId, lessonId]);
+    fetchData(); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [courseId, lessonId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function fetchData() {
     setLoading(true);

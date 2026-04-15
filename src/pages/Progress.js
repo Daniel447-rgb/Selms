@@ -6,14 +6,14 @@ import { FiBook, FiCheckSquare, FiStar, FiAward, FiTrendingUp } from 'react-icon
 import './Progress.css';
 
 export default function Progress() {
-  const { currentUser, userProfile } = useAuth();
+  const { userProfile } = useAuth();
   const [courseProgress, setCourseProgress] = useState([]);
   const [quizHistory, setQuizHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchProgress();
-  }, [userProfile]);
+    fetchProgress(); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [userProfile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function fetchProgress() {
     if (!userProfile) return;

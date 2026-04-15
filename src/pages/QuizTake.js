@@ -3,13 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
-import toast from 'react-hot-toast';
-import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiClock, FiAlertCircle } from 'react-icons/fi';
+import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiClock } from 'react-icons/fi';
 import './QuizTake.css';
 
 export default function QuizTake() {
   const { quizId } = useParams();
-  const { currentUser, userProfile, setUserProfile } = useAuth();
+  const { currentUser, setUserProfile } = useAuth();
   const navigate = useNavigate();
 
   const [quiz, setQuiz] = useState(null);
@@ -23,14 +22,14 @@ export default function QuizTake() {
   useEffect(() => {
     async function fetchQuiz() {
       const snap = await getDoc(doc(db, 'quizzes', quizId));
-      if (!snap.exists()) { navigate('/quizzes'); return; }
+      if (!snap.exists()) { navigate('/quizzes'); return; } // eslint-disable-line react-hooks/exhaustive-deps
       const data = { id: snap.id, ...snap.data() };
       setQuiz(data);
       if (data.timeLimit) setTimeLeft(data.timeLimit * 60);
       setLoading(false);
     }
     fetchQuiz();
-  }, [quizId]);
+  }, [quizId, navigate]);
 
   const submitQuiz = useCallback(async (finalAnswers) => {
     if (!quiz) return;
@@ -54,7 +53,7 @@ export default function QuizTake() {
     } catch (err) {
       console.error(err);
     }
-  }, [quiz, quizId, currentUser]);
+  }, [quiz, quizId, currentUser, setUserProfile]);
 
   useEffect(() => {
     if (timeLeft === null || submitted) return;

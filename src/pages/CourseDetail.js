@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import {
   FiArrowLeft, FiPlay, FiFileText, FiLock, FiCheckCircle,
-  FiUser, FiClock, FiBook, FiDownload
+  FiUser, FiClock, FiBook
 } from 'react-icons/fi';
 import './CourseDetail.css';
 
@@ -22,8 +22,8 @@ export default function CourseDetail() {
   const isInstructor = userProfile?.role === 'instructor';
 
   useEffect(() => {
-    fetchCourse();
-  }, [courseId]);
+    fetchCourse(); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [courseId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function fetchCourse() {
     try {

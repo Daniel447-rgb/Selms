@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
-import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { FiBook, FiCheckSquare, FiBarChart2, FiAward, FiArrowRight, FiClock } from 'react-icons/fi';
 import './Dashboard.css';
