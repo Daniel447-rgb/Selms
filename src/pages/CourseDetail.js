@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { doc, getDoc, collection, getDocs, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -44,19 +44,39 @@ export default function CourseDetail() {
   }
 
   async function enroll() {
-    try {
-      await updateDoc(doc(db, 'users', currentUser.uid), {
+  try {
+    const userRef = doc(db, 'users', currentUser.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        uid: currentUser.uid,
+        email: currentUser.email,
+        displayName: currentUser.displayName || 'User',
+        role: 'student',
+        createdAt: new Date().toISOString(),
+        bio: '',
+        enrolledCourses: [courseId],
+        completedLessons: [],
+        badges: [],
+        quizResults: {}
+      });
+    } else {
+      await updateDoc(userRef, {
         enrolledCourses: arrayUnion(courseId)
       });
-      setUserProfile(prev => ({
-        ...prev,
-        enrolledCourses: [...(prev.enrolledCourses || []), courseId]
-      }));
-      toast.success('Enrolled! Start learning now 🎉');
-    } catch {
-      toast.error('Failed to enroll');
     }
+
+    setUserProfile(prev => ({
+      ...(prev || {}),
+      enrolledCourses: [...((prev?.enrolledCourses) || []), courseId]
+    }));
+    toast.success('Enrolled! Start learning now 🎉');
+  } catch (err) {
+    console.error('Enroll error:', err);
+    toast.error(err.message || 'Failed to enroll');
   }
+}
 
   const isCompleted = (lessonId) => userProfile?.completedLessons?.includes(`${courseId}_${lessonId}`);
 

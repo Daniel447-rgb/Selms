@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { collection, getDocs, doc, updateDoc, arrayUnion, getDoc, setDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
-import { collection, getDocs, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -50,20 +50,45 @@ export default function Courses() {
     }
   }
 
-  async function enroll(courseId) {
-    if (!currentUser) return;
-    try {
-      const userRef = doc(db, 'users', currentUser.uid);
-      await updateDoc(userRef, { enrolledCourses: arrayUnion(courseId) });
-      setUserProfile(prev => ({
-        ...prev,
-        enrolledCourses: [...(prev.enrolledCourses || []), courseId]
-      }));
-      toast.success('Enrolled successfully! 🎉');
-    } catch (err) {
-      toast.error('Failed to enroll');
+ async function enroll(courseId) {
+  if (!currentUser) return;
+  try {
+    const userRef = doc(db, 'users', currentUser.uid);
+
+    // Check if user document exists first
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      // Document missing — create it with setDoc
+      await setDoc(userRef, {
+        uid: currentUser.uid,
+        email: currentUser.email,
+        displayName: currentUser.displayName || 'User',
+        role: 'student',
+        createdAt: new Date().toISOString(),
+        bio: '',
+        enrolledCourses: [courseId],
+        completedLessons: [],
+        badges: [],
+        quizResults: {}
+      });
+    } else {
+      // Document exists — safely update
+      await updateDoc(userRef, {
+        enrolledCourses: arrayUnion(courseId)
+      });
     }
+
+    setUserProfile(prev => ({
+      ...(prev || {}),
+      enrolledCourses: [...((prev?.enrolledCourses) || []), courseId]
+    }));
+    toast.success('Enrolled successfully! 🎉');
+  } catch (err) {
+    console.error('Enroll error:', err); // <-- check this in DevTools
+    toast.error(err.message || 'Failed to enroll');
   }
+}
 
   const isEnrolled = (courseId) => userProfile?.enrolledCourses?.includes(courseId);
 
